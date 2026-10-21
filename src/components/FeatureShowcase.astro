@@ -1,0 +1,62 @@
+---
+import Icon from "./Icon.astro";
+import ScreenshotFrame from "./ScreenshotFrame.astro";
+import { screenshots, featureKeys } from "../data/showcase";
+---
+
+<section class="feature-showcase" id="features" aria-label="Explore Devcroft features" data-showcase>
+  <div class="feature-tabs" role="tablist" aria-label="Workspace features">
+    {featureKeys.map((name, index) => (
+      <button
+        class="feature-tab"
+        id={`feature-tab-${name}`}
+        role="tab"
+        aria-selected={index === 0 ? "true" : "false"}
+        aria-controls={`feature-panel-${name}`}
+        tabindex={index === 0 ? 0 : -1}
+        data-feature-tab
+      >
+        <Icon name={screenshots[name].icon} size={18} />
+        <span>{screenshots[name].tab}</span>
+      </button>
+    ))}
+  </div>
+  <div class="showcase-stage">
+    {featureKeys.map((name, index) => (
+      <div
+        class="feature-panel"
+        id={`feature-panel-${name}`}
+        role="tabpanel"
+        aria-labelledby={`feature-tab-${name}`}
+        tabindex="0"
+        hidden={index !== 0}
+        data-feature-panel
+      >
+        <ScreenshotFrame name={name} instance="hero" eager={index === 0} />
+        <div class="showcase-caption">
+          <span class="showcase-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h2>{screenshots[name].title}</h2>
+            <p>{screenshots[name].description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+    <div class="showcase-bottom">
+      <span class="preview-label"><span class="live-dot"></span>
+        {featureKeys.some((name) => screenshots[name].placeholder)
+          ? "Illustrative previews · real app captures to follow"
+          : "Captured in Devcroft"}
+      </span>
+      <div class="showcase-controls" aria-label="Feature navigation">
+        <button type="button" data-feature-prev aria-label="Previous feature"><Icon name="chevron-left" size={18} /></button>
+        <span data-feature-count aria-hidden="true">01 / {String(featureKeys.length).padStart(2, "0")}</span>
+        <button type="button" data-feature-next aria-label="Next feature"><Icon name="chevron-right" size={18} /></button>
+      </div>
+    </div>
+    <p class="sr-only" data-feature-status role="status" aria-atomic="true">
+      {screenshots[featureKeys[0]].tab}, feature 1 of {featureKeys.length}
+    </p>
+  </div>
+  <noscript><p class="showcase-fallback">Enable JavaScript to explore the other feature tabs and enlarge previews.</p></noscript>
+</section>

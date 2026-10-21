@@ -3,100 +3,50 @@ import Icon from "./Icon.astro";
 import { screenshots, type ScreenshotKey } from "../data/showcase";
 interface Props {
   name: ScreenshotKey;
-  compact?: boolean;
+  instance: string;
+  eager?: boolean;
 }
-const { name, compact = false } = Astro.props;
+const { name, instance, eager = false } = Astro.props;
 const shot = screenshots[name];
+const id = `${instance}-${name}`;
 ---
 
-<figure class:list={["screenshot-figure", { "compact-shot": compact }]}>
-  <div class="screenshot-mat">
-    <div class="screenshot-label">
-      <span>{shot.title}</span>
-      <span>{shot.placeholder ? "SCREENSHOT PLACEHOLDER" : "IN DEVCROFT"}</span>
-    </div>
-    <button
-      class="screenshot-open"
-      data-screenshot={name}
-      aria-label={`Enlarge ${shot.title.toLowerCase()}${shot.placeholder ? " placeholder" : " screenshot"}`}
-    >
+<div class:list={["app-window", { "app-window-light": shot.chromeInset === 0 }]}>
+  <div class="window-titlebar">
+    <span class="window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="window-title">devcroft <span>/</span> {shot.tab}</span>
+    <span class="window-symbol" aria-hidden="true"><Icon name={shot.icon} size={15} /></span>
+  </div>
+  <button
+    class="screenshot-open"
+    data-screenshot={id}
+    aria-haspopup="dialog"
+    aria-controls={`screenshot-${id}`}
+    aria-label={`Enlarge ${shot.tab.toLowerCase()} ${shot.placeholder ? "illustration" : "screenshot"}`}
+  >
+    <span class="screenshot-viewport">
       <img
         src={shot.src}
         alt={shot.alt}
-        width={compact ? 1040 : 2080}
-        height={compact ? 520 : 900}
-        loading="lazy"
+        width={shot.width}
+        height={shot.height}
+        loading={eager ? "eager" : "lazy"}
+        fetchpriority={eager ? "high" : "auto"}
+        style={`margin-top: -${shot.chromeInset}%`}
       />
-      {shot.annotations.map((point, index) => (
-        <span
-          class="screenshot-pin"
-          style={`--pin-x:${point.x}%;--pin-y:${point.y}%`}
-          aria-hidden="true"
-        >
-          {index + 1}
-        </span>
-      ))}
-      <span class="screenshot-enlarge">
-        <Icon name="external" size={14} /> Enlarge
-      </span>
-    </button>
-    {shot.annotations.length > 0 && (
-      <ol class="screenshot-annotations">
-        {shot.annotations.map((point) => (
-          <li>{point.label}</li>
-        ))}
-      </ol>
-    )}
-  </div>
-  {!compact && (
-    <figcaption>
-      {shot.placeholder
-        ? "Illustrative preview · real app capture to follow"
-        : "Captured in Devcroft"}
-    </figcaption>
-  )}
-</figure>
-<dialog
-  class="screenshot-dialog"
-  id={`screenshot-${name}`}
-  aria-labelledby={`screenshot-title-${name}`}
->
+    </span>
+    <span class="screenshot-enlarge"><Icon name="expand" size={14} /> Enlarge</span>
+  </button>
+</div>
+<dialog class="screenshot-dialog" id={`screenshot-${id}`} aria-labelledby={`screenshot-title-${id}`}>
   <div class="screenshot-dialog-top">
     <div>
-      <h2 id={`screenshot-title-${name}`}>{shot.title}</h2>
-      {shot.placeholder && (
-        <p>Illustrative placeholder · not a real app capture</p>
-      )}
+      <h2 id={`screenshot-title-${id}`}>{shot.tab}</h2>
+      <p>{shot.placeholder ? "Illustrative preview · not a real app capture" : "Captured in Devcroft"}</p>
     </div>
     <form method="dialog">
-      <button aria-label="Close screenshot" autofocus>
-        ×
-      </button>
+      <button aria-label="Close screenshot" autofocus><Icon name="close" size={20} /></button>
     </form>
   </div>
-  <div class="screenshot-dialog-image">
-    <img
-      src={shot.src}
-      alt={shot.alt}
-      width={compact ? 1040 : 2080}
-      height={compact ? 520 : 900}
-      loading="lazy"
-    />
-    {shot.annotations.map((point, index) => (
-      <span
-        class="screenshot-pin"
-        style={`--pin-x:${point.x}%;--pin-y:${point.y}%`}
-        aria-hidden="true"
-      >
-        {index + 1}
-      </span>
-    ))}
-  </div>
-  {shot.annotations.length > 0 && (
-    <ol class="screenshot-annotations">
-      {shot.annotations.map((point) => (
-        <li>{point.label}</li>
-      ))}
-    </ol>
-  )}
+  <img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" />
 </dialog>

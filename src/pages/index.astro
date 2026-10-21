@@ -1,9 +1,10 @@
 ---
 import "../styles/global.css";
 import Icon from "../components/Icon.astro";
-import VideoShowcase from "../components/VideoShowcase.astro";
+import FeatureShowcase from "../components/FeatureShowcase.astro";
 import ScreenshotFrame from "../components/ScreenshotFrame.astro";
-import { demoVideo } from "../data/showcase";
+import AnnotatedScreenshot from "../components/AnnotatedScreenshot.astro";
+import { screenshots } from "../data/showcase";
 const repo = "https://github.com/hossainemruz/devcroft";
 const agents = [
   { name: "Claude Code", icon: "claude" },
@@ -97,19 +98,15 @@ const details = [
           More <span class="serif">making.</span>
         </h1>
         <p class="hero-description">
-          Keep your development workflow same no matter which harness you use.
+          Your agents, code, and project knowledge. One native workspace.
+          <br class="desktop-break" /> A familiar flow, whichever harness you choose.
         </p>
         <div class="hero-actions">
           <a class="button" href="#download">
             <Icon name="download" size={18} /> Download Devcroft
           </a>
-          <a class="text-button" href="#demo">
-            <span class="play-circle">
-              <Icon name="play" size={12} />
-            </span>{" "}
-            {demoVideo.src
-              ? "Watch the walkthrough"
-              : "Preview the video layout"}{" "}
+          <a class="text-button" href="#features">
+            Explore the workspace
             <Icon name="arrow" size={16} />
           </a>
         </div>
@@ -117,13 +114,13 @@ const details = [
           Built with Rust & GPUI <span>·</span> Open source <span>·</span> Yours
           to make your own
         </div>
-        <VideoShowcase />
+        <FeatureShowcase />
       </section>
       <section
         class="agents-section container"
         aria-label="Supported coding agents"
       >
-        <p>THE AGENTS YOU KNOW. A WORKSPACE YOU’LL LOVE.</p>
+        <p>BRING YOUR AGENT. KEEP YOUR FLOW.</p>
         <div class="agent-logos">
           {agents.map((agent) => (
             <div>
@@ -138,7 +135,7 @@ const details = [
           ))}
         </div>
       </section>
-      <section class="features-section container" id="features">
+      <section class="features-section container" id="workflow">
         <div class="section-heading">
           <div class="eyebrow">A LITTLE LESS FRICTION</div>
           <h2>
@@ -173,7 +170,7 @@ const details = [
               Meet your new workspace <Icon name="arrow" size={16} />
             </a>
           </article>
-          <ScreenshotFrame name="agent" />
+          <AnnotatedScreenshot name="agent" />
         </div>
         <div class="feature-pair reverse">
           <article class="feature-copy">
@@ -199,7 +196,7 @@ const details = [
               A closer look at review <Icon name="arrow" size={16} />
             </a>
           </article>
-          <ScreenshotFrame name="review" />
+          <AnnotatedScreenshot name="review" />
         </div>
         <div class="feature-pair">
           <article class="feature-copy">
@@ -222,10 +219,10 @@ const details = [
               Explore repository resources <Icon name="arrow" size={16} />
             </a>
           </article>
-          <ScreenshotFrame name="resources" />
+          <AnnotatedScreenshot name="resources" />
         </div>
       </section>
-      <section class="workflow-section" id="workflow">
+      <section class="overview-section">
         <div class="container">
           <div class="section-heading">
             <div class="eyebrow">THE BIG PICTURE, WITHIN REACH</div>
@@ -240,9 +237,9 @@ const details = [
           </div>
           <div class="overview-grid">
             <article class="overview-card dashboard-card">
-              <ScreenshotFrame name="dashboard" compact />
+              <div class="overview-preview"><ScreenshotFrame name="dashboard" instance="overview" /></div>
               <div class="overview-copy">
-                <Icon name="grid" />
+                <span class="feature-number">YOUR DAILY STARTING POINT</span>
                 <h3>Start with a little clarity.</h3>
                 <p>
                   Recent projects, pull requests, todos, and things to read.
@@ -252,9 +249,9 @@ const details = [
               </div>
             </article>
             <article class="overview-card graph-card">
-              <ScreenshotFrame name="relationships" compact />
+              <div class="overview-preview"><ScreenshotFrame name="relationships" instance="overview" /></div>
               <div class="overview-copy">
-                <Icon name="branch" />
+                <span class="feature-number">CONTEXT ACROSS REPOSITORIES</span>
                 <h3>See how the pieces connect.</h3>
                 <p>
                   Map providers and consumers on a repository canvas. Give each
@@ -264,9 +261,11 @@ const details = [
               </div>
             </article>
           </div>
+          {(screenshots.dashboard.placeholder || screenshots.relationships.placeholder) && <p class="overview-note">Illustrative previews · real app captures to follow</p>}
         </div>
       </section>
-      <section class="details-section container">
+      <section class="details-section">
+        <div class="container">
         <div class="detail-intro">
           <span class="eyebrow">THE EVERYDAY ESSENTIALS</span>
           <h2>
@@ -298,6 +297,7 @@ const details = [
             <kbd>⌘ J</kbd> Navigation
           </div>
           <small>Use Ctrl on Linux.</small>
+        </div>
         </div>
       </section>
       <section class="download-section container" id="download">
@@ -341,9 +341,11 @@ const details = [
         <span class="download-orbit" aria-hidden="true"></span>
       </section>
       <section class="faq-section container">
-        <h2>
-          A few things <span class="serif">to know.</span>
-        </h2>
+        <div class="faq-intro">
+          <span class="eyebrow">BEFORE YOU SETTLE IN</span>
+          <h2>A few things<br /><span class="serif">to know.</span></h2>
+          <p>A workspace for the tools you already love.</p>
+        </div>
         <div class="faq-list">
           <details>
             <summary>
