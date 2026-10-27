@@ -1,6 +1,107 @@
-// Replace each illustration with a real app capture and set placeholder: false.
-// chromeInset hides the title bar baked into the legacy illustrations.
-// Set it to 0 for new captures of the app's content area.
+export interface Screenshot {
+  src: string;
+  tab: string;
+  icon: string;
+  title: string;
+  description: string;
+  alt: string;
+  placeholder: boolean;
+  width: number;
+  height: number;
+  chromeInset: number;
+  // Real captures already include their own window chrome, so the frame
+  // renders the image as-is instead of adding a synthetic title bar.
+  nativeChrome?: boolean;
+}
+
+export interface Slide extends Screenshot {
+  key: string;
+}
+
+// Landing-page slider. Order here is the tab order. Each WebP is cropped to
+// the app window and resized to 2400px wide; the source PNGs sit beside them.
+export const slides: Slide[] = [
+  {
+    key: "home",
+    src: "/media/slider/1_home.webp",
+    tab: "Home",
+    icon: "grid",
+    title: "A little clarity before the first commit.",
+    description:
+      "Bring recent projects, pull requests, todos, and reading into one place. Use Spaces to give work and personal projects room of their own.",
+    alt: "Devcroft Home showing recent agent activity, recent projects, and an inbox with pull requests, todos, and reading.",
+    placeholder: false,
+    nativeChrome: true,
+    width: 2400,
+    height: 1505,
+    chromeInset: 0,
+  },
+  {
+    key: "agent",
+    src: "/media/slider/2_agent.webp",
+    tab: "Agent",
+    icon: "terminal",
+    title: "Your agent. Your context. Right where you left them.",
+    description:
+      "Pick your harness, resume a conversation, and keep building. Your sessions stay with the project as you move through the workspace.",
+    alt: "Devcroft Agent tab showing a Codex conversation, recent sessions in the sidebar, and the devcroft repository on main.",
+    placeholder: false,
+    nativeChrome: true,
+    width: 2400,
+    height: 1505,
+    chromeInset: 0,
+  },
+  {
+    key: "editor",
+    src: "/media/slider/3_editor.webp",
+    tab: "Editor",
+    icon: "code",
+    title: "An editor that fits the moment.",
+    description:
+      "Make a quick change in the built-in editor, or open the checkout in Neovim, Zed, or VS Code. The file tree and your agent session stay within reach.",
+    alt: "Devcroft Editor tab showing the devcroft file tree and native.rs open in the built-in editor.",
+    placeholder: false,
+    nativeChrome: true,
+    width: 2400,
+    height: 1505,
+    chromeInset: 0,
+  },
+  {
+    key: "review",
+    src: "/media/slider/4_review.webp",
+    tab: "Review",
+    icon: "review",
+    title: "From “looks good” to a closer look.",
+    description:
+      "Read the diff, comment on a line, and let your agent pick up the feedback. The conversation stays connected to the change.",
+    alt: "Devcroft Review tab showing changed files and a syntax-highlighted diff against origin/main.",
+    placeholder: false,
+    nativeChrome: true,
+    width: 2400,
+    height: 1505,
+    chromeInset: 0,
+  },
+  {
+    key: "resources",
+    src: "/media/slider/5_resources.webp",
+    tab: "Resources",
+    icon: "book",
+    title: "Keep the thinking behind the code.",
+    description:
+      "Plans, notes, reviews, and visual tutorials live beside their repository. Return to the context—and the session—that started it all.",
+    alt: "Devcroft Resources tab showing a repository resource list, a rendered persistence plan, and an on-this-page outline.",
+    placeholder: false,
+    nativeChrome: true,
+    width: 2400,
+    height: 1505,
+    chromeInset: 0,
+  },
+];
+
+// Illustrations used by the detailed stories and overview cards below the
+// hero. Replace each with a real app capture and set placeholder: false.
+// chromeInset hides the title bar baked into the legacy illustrations; set it
+// to 0 for new captures of the app's content area.
 export const screenshots = {
   agent: {
     src: "/media/agent-placeholder.webp",
@@ -68,9 +169,6 @@ export const screenshots = {
     chromeInset: 0,
   },
 };
-
-export type ScreenshotKey = keyof typeof screenshots;
-export const featureKeys = Object.keys(screenshots) as ScreenshotKey[];
 
 // Numbered callouts in the detailed feature stories, relative to the full image.
 export const featureDetails = {

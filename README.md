@@ -30,13 +30,14 @@ The canonical domain is configured in `astro.config.mjs`, page metadata, and `pu
 ## Content and assets
 
 - `src/pages/index.astro`: product copy, alternating feature stories, FAQs, download links, metadata.
-- `src/data/showcase.ts`: feature order, tab labels, descriptions, screenshot paths, dimensions, and placeholder flags.
+- `src/data/showcase.ts`: hero slide order, tab labels, captions, and the illustrative screenshots used by the detailed stories and overview cards.
 - `src/components/FeatureShowcase.astro`: five-tab hero feature explorer with manual previous/next controls.
 - `src/components/AnnotatedScreenshot.astro`: detailed feature screenshots with numbered callouts and enlargement dialogs.
-- `src/components/ScreenshotFrame.astro`: Mac-style application frames and accessible enlargement dialogs. Each use has a unique instance ID.
+- `src/components/ScreenshotFrame.astro`: application frames (native chrome for real captures, synthetic Mac-style chrome for illustrations) and accessible enlargement dialogs. Each use has a unique ID.
 - `src/scripts/showcase.ts`: accessible tab and arrow navigation, screenshot enlargement, and download feedback. Slides never advance automatically.
 - `src/styles/global.css`: responsive design and reduced-motion handling.
-- `public/media`: temporary WebP images captured from the previous website illustrations. **These are not real screenshots of Devcroft**; the page labels them as placeholders.
+- `public/media/slider`: real Devcroft captures for the hero explorer, cropped to the app window and resized to 2400px wide. The source PNG captures sit beside the WebP versions.
+- `public/media`: temporary WebP illustrations used by the detailed stories and overview cards. **These are not real screenshots of Devcroft**; the page labels them as placeholders.
 - `public/images`: original Devcroft/agent icons and the website sharing card.
 - `public/fonts`: self-hosted Google Sans Flex and its OFL license, from Devcroft.
 
@@ -44,17 +45,17 @@ The canonical domain is configured in `astro.config.mjs`, page metadata, and `pu
 
 The macOS and Linux buttons currently point to `#download-status` and explain that release downloads are coming soon. When binaries are available, replace their `href` values with release asset URLs, remove their `data-download` attributes, and update the status copy. No binary architecture or minimum OS version is claimed until releases are confirmed.
 
-### Replace the screenshot placeholders
+### Update the screenshots
 
-1. Add app content captures to `public/media/` (without native window title bars).
-2. In `src/data/showcase.ts`, update each feature’s `src`, descriptive `alt`, `width`, and `height`, then set `placeholder: false` and `chromeInset: 0`.
-3. The frame supplies a consistent Mac-style title bar. `chromeInset` currently hides the title bar baked into the three legacy workspace illustrations; it is a percentage of the image width.
-4. Update the detailed story labels and callout coordinates in `featureDetails`; coordinates are percentages of the full, uncropped image.
-5. Adjust the feature’s tab, title, and description in the same data file. Order follows the data entries. Keep screenshots near the existing wide aspect ratios; the hero uses a fixed stage to avoid layout jumps.
+1. Hero slides live in the `slides` array in `src/data/showcase.ts`. Add a capture to `public/media/slider/` with the same 3024×1896 window size, then add a slide with a `key`, short `tab` label, `src`, descriptive `alt`, `width`, `height`, title, and description. Order follows the array.
+2. Keep the PNG captures beside the WebP files and regenerate the 2400px-wide WebP when a capture changes. Real captures include their own window chrome, so they set `nativeChrome: true` and the frame renders them as-is.
+3. The detailed stories and overview cards still use the illustrations in `public/media` through the `screenshots` object. To replace one, update its `src`, `alt`, `width`, and `height`, then set `placeholder: false` and `chromeInset: 0`.
+4. `chromeInset` hides the title bar baked into the three legacy workspace illustrations; it is a percentage of the image width. If you keep the synthetic title bar, adjust that value instead.
+5. Update the detailed story labels and callout coordinates in `featureDetails`; coordinates are percentages of the full image.
 
 Click a tab or use the previous/next buttons to change features. Focused tabs support Left/Right, Home, and End. All screenshots open in a native dialog; Escape, the close button, or the backdrop dismisses it and returns focus. Reduced-motion preferences disable transitions. Without JavaScript, the initial feature and all page content remain available, with a note explaining the interactive controls.
 
-Capture the same clean demo project throughout. Keep app colors intact and avoid personal paths, account information, or private project content. The existing WebP images remain explicitly labeled as illustrative previews until replaced with real captures.
+Capture the same clean demo project throughout. Keep app colors intact and avoid personal paths, account information, or private project content. The illustrations in `public/media` remain explicitly labeled as illustrative previews until replaced with real captures.
 
 ### Product sources
 

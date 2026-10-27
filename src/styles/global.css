@@ -339,6 +339,11 @@ h4 {
     0 20px 40px -15px #1f3e3b40,
     0 2px 7px #243e2f14;
 }
+/* Real captures already contain their own window chrome. */
+.app-window-native {
+  border: 0;
+  background: transparent;
+}
 .window-titlebar {
   display: grid;
   grid-template-columns: 64px 1fr 64px;
@@ -401,19 +406,6 @@ h4 {
   display: block;
   width: 100%;
   height: auto;
-}
-.feature-panel .screenshot-open {
-  aspect-ratio: 2.54;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.feature-panel .screenshot-viewport {
-  width: 100%;
-  max-height: 100%;
-}
-.feature-panel .app-window-light .screenshot-viewport {
-  width: 83.5%;
 }
 .app-window-light {
   background: #e9eee4;
@@ -1334,6 +1326,12 @@ body:has(.screenshot-dialog[open]) {
   }
   .showcase-stage {
     padding: 12px 10px;
+  }
+  .feature-tab {
+    padding: 10px 11px;
+  }
+  .feature-tab svg {
+    display: none;
   }
   .app-window {
     border-radius: 7px;

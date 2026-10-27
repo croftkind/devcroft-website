@@ -1,22 +1,22 @@
 ---
 import Icon from "./Icon.astro";
-import { screenshots, type ScreenshotKey } from "../data/showcase";
+import type { Screenshot } from "../data/showcase";
 interface Props {
-  name: ScreenshotKey;
-  instance: string;
+  shot: Screenshot;
+  id: string;
   eager?: boolean;
 }
-const { name, instance, eager = false } = Astro.props;
-const shot = screenshots[name];
-const id = `${instance}-${name}`;
+const { shot, id, eager = false } = Astro.props;
 ---
 
-<div class:list={["app-window", { "app-window-light": shot.chromeInset === 0 }]}>
-  <div class="window-titlebar">
-    <span class="window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="window-title">devcroft <span>/</span> {shot.tab}</span>
-    <span class="window-symbol" aria-hidden="true"><Icon name={shot.icon} size={15} /></span>
-  </div>
+<div class:list={["app-window", { "app-window-light": shot.chromeInset === 0 && !shot.nativeChrome, "app-window-native": shot.nativeChrome }]}>
+  {!shot.nativeChrome && (
+    <div class="window-titlebar">
+      <span class="window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="window-title">devcroft <span>/</span> {shot.tab}</span>
+      <span class="window-symbol" aria-hidden="true"><Icon name={shot.icon} size={15} /></span>
+    </div>
+  )}
   <button
     class="screenshot-open"
     data-screenshot={id}
@@ -32,7 +32,7 @@ const id = `${instance}-${name}`;
         height={shot.height}
         loading={eager ? "eager" : "lazy"}
         fetchpriority={eager ? "high" : "auto"}
-        style={`margin-top: -${shot.chromeInset}%`}
+        style={shot.chromeInset ? `margin-top: -${shot.chromeInset}%` : undefined}
       />
     </span>
     <span class="screenshot-enlarge"><Icon name="expand" size={14} /> Enlarge</span>
