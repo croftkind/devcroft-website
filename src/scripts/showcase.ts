@@ -93,14 +93,3 @@ document
       }
     });
   });
-
-document
-  .querySelectorAll<HTMLAnchorElement>("[data-download]")
-  .forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      const status = document.querySelector("#download-status");
-      if (status)
-        status.textContent = `${link.dataset.download} downloads are coming soon. You can build Devcroft from source today.`;
-    });
-  });

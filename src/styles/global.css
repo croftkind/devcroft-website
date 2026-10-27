@@ -700,7 +700,7 @@ h4 {
 .keyboard-strip small {
   font-size: 10px;
 }
-.download-section {
+.install-section {
   position: relative;
   overflow: hidden;
   border: 1px solid #d7e1ca;
@@ -710,47 +710,160 @@ h4 {
   padding: 57px 25px;
   text-align: center;
 }
-.download-inner {
+.install-inner {
   position: relative;
   z-index: 1;
 }
-.download-inner > img {
+.install-inner > img {
   border-radius: 18px;
   box-shadow: 0 10px 22px #29453020;
   margin-bottom: 24px;
 }
-.download-inner .eyebrow {
+.install-inner .eyebrow {
   justify-content: center;
   font-size: 9px;
   color: var(--muted);
 }
-.download-inner h2 {
+.install-inner h2 {
   font-size: 58px;
   letter-spacing: -2.5px;
   line-height: 1.08;
   margin-top: 20px;
 }
-.download-inner > p {
+.install-inner > p {
   font-size: 14px;
   color: var(--muted);
   margin-top: 18px;
 }
-.download-options {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
+.install-tabs-wrap {
   margin-top: 27px;
 }
-.download-inner .download-note {
-  font-size: 11px;
-  margin-top: 15px;
+.install-tabs {
+  display: inline-flex;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #d3dec5;
+  border-radius: 11px;
+  background: #dfe8d3;
 }
-.download-inner .inline-link {
+.install-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-size: 12px;
+  transition:
+    color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
+}
+.install-tab:hover {
+  color: var(--ink);
+  background: #ffffff66;
+}
+.install-tab[aria-selected="true"] {
+  background: var(--paper);
+  color: var(--green);
+  border-color: #d4ddd0;
+  box-shadow: 0 2px 5px #20392d0a;
+}
+.install-tab:focus-visible {
+  outline-offset: -3px;
+}
+.install-panel {
+  max-width: 840px;
+  margin: 14px auto 0;
+}
+.install-noscript {
+  display: grid;
+  gap: 10px;
+  max-width: 840px;
+  margin: 14px auto 0;
+}
+.install-noscript > p {
+  font-size: 11px;
+  color: var(--muted);
+}
+.install-panel:not([hidden]) {
+  animation: feature-in 0.25s ease-out;
+}
+.install-command {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px 12px 18px;
+  background: #243f36;
+  border: 1px solid #1c332b;
+  border-radius: 10px;
+  box-shadow: 0 10px 24px #2945301f;
+  text-align: left;
+}
+.install-command code {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #e8eee1;
+}
+.install-prompt {
+  margin-right: 6px;
+  color: #8fae92;
+  user-select: none;
+}
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 11px;
+  border: 1px solid #ffffff2b;
+  border-radius: 6px;
+  background: #ffffff10;
+  color: #dce7d4;
+  font-size: 10px;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border-color 0.18s;
+}
+.copy-button:hover {
+  background: #ffffff1f;
+}
+.copy-button.is-copied {
+  background: #d7e6c8;
+  border-color: #d7e6c8;
+  color: #244233;
+}
+.install-inner .install-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.install-note code {
+  padding: 2px 5px;
+  border: 1px solid #d3dccb;
+  border-radius: 4px;
+  background: #f8f9f5a8;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 10.5px;
+}
+.install-inner .install-platform-note {
+  font-size: 11px;
+  margin-top: 20px;
+}
+.install-inner .inline-link {
   font-size: 11px;
   font-weight: 400;
   margin-top: 19px;
 }
-.download-orbit {
+.install-orbit {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -761,7 +874,7 @@ h4 {
   border-radius: 50%;
   pointer-events: none;
 }
-.download-orbit::after {
+.install-orbit::after {
   content: "";
   position: absolute;
   inset: 45px;
@@ -1274,11 +1387,11 @@ body:has(.screenshot-dialog[open]) {
   .keyboard-strip small {
     margin-left: 0;
   }
-  .download-section {
+  .install-section {
     margin-top: 52px;
     padding: 42px 22px;
   }
-  .download-inner h2 {
+  .install-inner h2 {
     font-size: 49px;
   }
   .faq-section {
@@ -1406,18 +1519,34 @@ body:has(.screenshot-dialog[open]) {
   .overview-copy h3 {
     font-size: 23px;
   }
-  .download-inner h2 {
+  .install-inner h2 {
     font-size: 44px;
   }
-  .download-inner > p {
+  .install-inner > p {
     font-size: 13px;
   }
-  .download-options {
-    flex-direction: column;
-    max-width: 250px;
-    margin-inline: auto;
+  .install-tabs {
+    display: flex;
+    width: 100%;
   }
-  .download-inner .download-note {
+  .install-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 12px;
+  }
+  .install-command {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 13px;
+    gap: 11px;
+  }
+  .install-command code {
+    font-size: 11px;
+  }
+  .copy-button {
+    align-self: flex-end;
+  }
+  .install-inner .install-note {
     font-size: 10px;
   }
   .site-footer {

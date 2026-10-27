@@ -29,21 +29,22 @@ The canonical domain is configured in `astro.config.mjs`, page metadata, and `pu
 
 ## Content and assets
 
-- `src/pages/index.astro`: product copy, alternating feature stories, FAQs, download links, metadata.
+- `src/pages/index.astro`: product copy, alternating feature stories, FAQs, install section, metadata.
 - `src/data/showcase.ts`: hero slide order, tab labels, captions, and the illustrative screenshots used by the detailed stories and overview cards.
 - `src/components/FeatureShowcase.astro`: five-tab hero feature explorer with manual previous/next controls.
+- `src/components/InstallTabs.astro`: Homebrew and install-script tabs with copy-to-clipboard controls.
 - `src/components/AnnotatedScreenshot.astro`: detailed feature screenshots with numbered callouts and enlargement dialogs.
 - `src/components/ScreenshotFrame.astro`: application frames (native chrome for real captures, synthetic Mac-style chrome for illustrations) and accessible enlargement dialogs. Each use has a unique ID.
-- `src/scripts/showcase.ts`: accessible tab and arrow navigation, screenshot enlargement, and download feedback. Slides never advance automatically.
+- `src/scripts/showcase.ts`: accessible tab and arrow navigation plus screenshot enlargement. Slides never advance automatically.
 - `src/styles/global.css`: responsive design and reduced-motion handling.
 - `public/media/slider`: real Devcroft captures for the hero explorer, cropped to the app window and resized to 2400px wide. The source PNG captures sit beside the WebP versions.
 - `public/media`: temporary WebP illustrations used by the detailed stories and overview cards. **These are not real screenshots of Devcroft**; the page labels them as placeholders.
 - `public/images`: original Devcroft/agent icons and the website sharing card.
 - `public/fonts`: self-hosted Google Sans Flex and its OFL license, from Devcroft.
 
-### Replace download placeholders
+### Update installation commands
 
-The macOS and Linux buttons currently point to `#download-status` and explain that release downloads are coming soon. When binaries are available, replace their `href` values with release asset URLs, remove their `data-download` attributes, and update the status copy. No binary architecture or minimum OS version is claimed until releases are confirmed.
+The install section offers two methods: a Homebrew cask for macOS and the release install script for macOS and Linux. The commands live in the `methods` array in `src/components/InstallTabs.astro`. Update them there if the tap, asset name, or supported platforms change, and keep the platform note in `src/pages/index.astro` in sync. Windows is not supported yet; do not add a Windows tab or platform claim until it is.
 
 ### Update the screenshots
 
@@ -53,7 +54,7 @@ The macOS and Linux buttons currently point to `#download-status` and explain th
 4. `chromeInset` hides the title bar baked into the three legacy workspace illustrations; it is a percentage of the image width. If you keep the synthetic title bar, adjust that value instead.
 5. Update the detailed story labels and callout coordinates in `featureDetails`; coordinates are percentages of the full image.
 
-Click a tab or use the previous/next buttons to change features. Focused tabs support Left/Right, Home, and End. All screenshots open in a native dialog; Escape, the close button, or the backdrop dismisses it and returns focus. Reduced-motion preferences disable transitions. Without JavaScript, the initial feature and all page content remain available, with a note explaining the interactive controls.
+Click a tab or use the previous/next buttons to change features. Focused tabs support Left/Right, Home, and End. All screenshots open in a native dialog; Escape, the close button, or the backdrop dismisses it and returns focus. Reduced-motion preferences disable transitions. Without JavaScript, the initial feature and all page content remain available, with a note explaining the interactive controls; the install section shows both commands.
 
 Capture the same clean demo project throughout. Keep app colors intact and avoid personal paths, account information, or private project content. The illustrations in `public/media` remain explicitly labeled as illustrative previews until replaced with real captures.
 

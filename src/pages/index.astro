@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Icon from "../components/Icon.astro";
 import FeatureShowcase from "../components/FeatureShowcase.astro";
+import InstallTabs from "../components/InstallTabs.astro";
 import ScreenshotFrame from "../components/ScreenshotFrame.astro";
 import AnnotatedScreenshot from "../components/AnnotatedScreenshot.astro";
 import { screenshots } from "../data/showcase";
@@ -83,8 +84,8 @@ const details = [
           GitHub <Icon name="external" size={14} />
         </a>
       </nav>
-      <a class="button button-small" href="#download">
-        Get Devcroft <Icon name="download" size={15} />
+      <a class="button button-small" href="#install">
+        Install Devcroft <Icon name="terminal" size={15} />
       </a>
     </header>
     <main id="main">
@@ -102,8 +103,8 @@ const details = [
           <br class="desktop-break" /> A familiar flow, whichever harness you choose.
         </p>
         <div class="hero-actions">
-          <a class="button" href="#download">
-            <Icon name="download" size={18} /> Download Devcroft
+          <a class="button" href="#install">
+            <Icon name="terminal" size={18} /> Install Devcroft
           </a>
           <a class="text-button" href="#features">
             Explore the workspace
@@ -300,8 +301,8 @@ const details = [
         </div>
         </div>
       </section>
-      <section class="download-section container" id="download">
-        <div class="download-inner">
+      <section class="install-section container" id="install">
+        <div class="install-inner">
           <img
             src="/images/devcroft.png"
             width="76"
@@ -309,7 +310,7 @@ const details = [
             alt="Devcroft app icon"
             loading="lazy"
           />
-          <div class="eyebrow">MAKE ROOM FOR YOUR NEXT IDEA</div>
+          <div class="eyebrow">INSTALL DEVCROFT</div>
           <h2>
             Your work.
             <br />A little more <span class="serif">together.</span>
@@ -319,26 +320,19 @@ const details = [
             <br />
             Open source, and ready to become part of your flow.
           </p>
-          <div class="download-options">
-            <a class="button" href="#download-status" data-download="macOS">
-              <Icon name="download" size={18} /> Download for macOS
-            </a>
-            <a
-              class="button button-outline"
-              href="#download-status"
-              data-download="Linux"
-            >
-              <Icon name="download" size={18} /> Download for Linux
-            </a>
-          </div>
-          <p class="download-note" id="download-status" role="status">
-            Release downloads are coming soon. These are preview links.
+          <InstallTabs />
+          <p class="install-platform-note">
+            macOS 13+ on Apple Silicon · Linux x86-64 (Ubuntu 24.04 or
+            compatible). Windows isn’t supported yet.
           </p>
-          <a class="inline-link" href={`${repo}#requirements`}>
-            Build from source in the meantime <Icon name="external" size={15} />
+          <a
+            class="inline-link"
+            href={`${repo}/blob/main/docs/releases.md`}
+          >
+            Installation and release notes <Icon name="external" size={15} />
           </a>
         </div>
-        <span class="download-orbit" aria-hidden="true"></span>
+        <span class="install-orbit" aria-hidden="true"></span>
       </section>
       <section class="faq-section container">
         <div class="faq-intro">

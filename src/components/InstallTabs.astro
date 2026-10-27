@@ -1,0 +1,173 @@
+---
+import Icon from "./Icon.astro";
+
+const methods: Array<{
+  key: string;
+  label: string;
+  icon: string;
+  command: string;
+  note: string;
+  update?: string;
+  updateSuffix?: string;
+}> = [
+  {
+    key: "homebrew",
+    label: "Homebrew",
+    icon: "package",
+    command: "brew install --cask hossainemruz/tap/devcroft",
+    note: "For macOS. Update later with",
+    update: "brew upgrade --cask devcroft",
+  },
+  {
+    key: "script",
+    label: "Script",
+    icon: "terminal",
+    command:
+      "curl -fsSL https://github.com/hossainemruz/devcroft/releases/latest/download/install.sh | bash",
+    note: "For macOS and Linux. Run the same command again to update. Add",
+    update: "~/.local/bin",
+    updateSuffix: " to your PATH for the CLI.",
+  },
+];
+---
+
+<div class="install-tabs-wrap" data-install-tabs>
+  <div class="install-tabs" role="tablist" aria-label="Installation method">
+    {methods.map((method, index) => (
+      <button
+        class="install-tab"
+        type="button"
+        id={`install-tab-${method.key}`}
+        role="tab"
+        aria-selected={index === 0 ? "true" : "false"}
+        aria-controls={`install-panel-${method.key}`}
+        tabindex={index === 0 ? 0 : -1}
+        data-install-tab
+      >
+        <Icon name={method.icon} size={16} />
+        <span>{method.label}</span>
+      </button>
+    ))}
+  </div>
+  {methods.map((method, index) => (
+    <div
+      class="install-panel"
+      id={`install-panel-${method.key}`}
+      role="tabpanel"
+      aria-labelledby={`install-tab-${method.key}`}
+      hidden={index !== 0}
+      data-install-panel
+    >
+      <div class="install-command">
+        <code><span class="install-prompt" aria-hidden="true">$</span> {method.command}</code>
+        <button
+          class="copy-button"
+          type="button"
+          data-copy={method.command}
+          aria-label={`Copy ${method.label} install command`}
+        >
+          <Icon name="copy" size={15} />
+          <span data-copy-label>Copy</span>
+        </button>
+      </div>
+      <p class="install-note">
+        {method.note}
+        {method.update && <code>{method.update}</code>}
+        {method.updateSuffix}
+      </p>
+    </div>
+  ))}
+  <noscript>
+    <div class="install-noscript">
+      <p>JavaScript is off, so both installation commands are shown.</p>
+      {methods.map((method) => (
+        <div class="install-command">
+          <code><span class="install-prompt" aria-hidden="true">$</span> {method.command}</code>
+        </div>
+      ))}
+    </div>
+  </noscript>
+  <p class="sr-only" role="status" aria-live="polite" data-copy-status></p>
+</div>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-install-tabs]")
+    .forEach((root) => {
+      const tabs = Array.from(
+        root.querySelectorAll<HTMLButtonElement>("[data-install-tab]"),
+      );
+      const panels = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-install-panel]"),
+      );
+      const status = root.querySelector<HTMLElement>("[data-copy-status]");
+      let active = 0;
+
+      function selectMethod(index: number, focus = false) {
+        active = (index + tabs.length) % tabs.length;
+        tabs.forEach((tab, i) => {
+          tab.setAttribute("aria-selected", String(i === active));
+          tab.tabIndex = i === active ? 0 : -1;
+          panels[i].hidden = i !== active;
+        });
+        if (focus) tabs[active].focus({ preventScroll: true });
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => selectMethod(index));
+        tab.addEventListener("keydown", (event) => {
+          let next: number;
+          switch (event.key) {
+            case "ArrowRight":
+              next = active + 1;
+              break;
+            case "ArrowLeft":
+              next = active - 1;
+              break;
+            case "Home":
+              next = 0;
+              break;
+            case "End":
+              next = tabs.length - 1;
+              break;
+            default:
+              return;
+          }
+          event.preventDefault();
+          selectMethod(next, true);
+        });
+      });
+
+      async function copyText(text: string) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      root
+        .querySelectorAll<HTMLButtonElement>("[data-copy]")
+        .forEach((button) => {
+          const label = button.querySelector<HTMLElement>("[data-copy-label]");
+          const original = label?.textContent ?? "Copy";
+          let reset: number | undefined;
+
+          button.addEventListener("click", async () => {
+            const copied = await copyText(button.dataset.copy ?? "");
+            if (label) label.textContent = copied ? "Copied" : "Try again";
+            button.classList.toggle("is-copied", copied);
+            if (status)
+              status.textContent = copied
+                ? "Install command copied to clipboard."
+                : "Could not copy the install command.";
+            window.clearTimeout(reset);
+            reset = window.setTimeout(() => {
+              if (label) label.textContent = original;
+              button.classList.remove("is-copied");
+            }, 2000);
+          });
+        });
+    });
+</script>
