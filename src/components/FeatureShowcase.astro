@@ -16,11 +16,11 @@ import { slides } from "../data/showcase";
         tabindex={index === 0 ? 0 : -1}
         data-feature-tab
       >
-        <Icon name={slide.icon} size={18} />
         <span>{slide.tab}</span>
       </button>
     ))}
   </div>
+  <div class="showcase-shell">
   <div class="showcase-stage">
     {slides.map((slide, index) => (
       <div
@@ -57,6 +57,7 @@ import { slides } from "../data/showcase";
     <p class="sr-only" data-feature-status role="status" aria-atomic="true">
       {slides[0].tab}, feature 1 of {slides.length}
     </p>
+  </div>
   </div>
   <noscript><p class="showcase-fallback">Enable JavaScript to explore the other feature tabs and enlarge previews.</p></noscript>
 </section>
